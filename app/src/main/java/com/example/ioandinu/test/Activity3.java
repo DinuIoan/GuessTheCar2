@@ -21,6 +21,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckedTextView;
+import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 
@@ -35,6 +38,8 @@ public class Activity3 extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_3);
+        GridView gridview = (GridView) findViewById(R.id.gridview);
+        gridview.setAdapter(new ImageAdapter(this));
     }
 
     @Override

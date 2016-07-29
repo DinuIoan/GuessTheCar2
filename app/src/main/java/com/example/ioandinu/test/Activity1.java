@@ -23,17 +23,39 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 
 /**
  * Example Activity to demonstrate the lifecycle callback methods.
  */
 public class Activity1 extends Activity {
+    Realm database =
+            Realm.getInstance(
+                    new RealmConfiguration.Builder(Activity1.this)
+                            .name("GuessTheCar.realm")
+                            .build()
+            );
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_1);
+
+        try{
+            ItemsToGuess itemsToGuess = new ItemsToGuess();
+            
+
+
+            database.beginTransaction();
+            ItemsToGuess itemsToGuess2 = database.copyToRealm(itemsToGuess);
+            database.commitTransaction();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
