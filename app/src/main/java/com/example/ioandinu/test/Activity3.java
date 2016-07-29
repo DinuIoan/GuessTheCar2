@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CheckedTextView;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -40,6 +41,15 @@ public class Activity3 extends Activity {
         setContentView(R.layout.activity_3);
         GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(new ImageAdapter(this));
+
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                Intent i = new Intent(Activity3.this, ActivityLevel1Picture1.class);
+                startActivity(i);
+
+            }
+        });
     }
 
     @Override

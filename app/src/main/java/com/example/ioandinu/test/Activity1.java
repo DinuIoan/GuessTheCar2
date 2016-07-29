@@ -23,6 +23,9 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
+import com.facebook.stetho.Stetho;
+import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -31,12 +34,8 @@ import io.realm.RealmConfiguration;
  * Example Activity to demonstrate the lifecycle callback methods.
  */
 public class Activity1 extends Activity {
-    Realm database =
-            Realm.getInstance(
-                    new RealmConfiguration.Builder(Activity1.this)
-                            .name("GuessTheCar.realm")
-                            .build()
-            );
+    private RealmConfiguration database ;
+    private Realm realm;
 
 
     @Override
@@ -44,18 +43,50 @@ public class Activity1 extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_1);
 
-        try{
-            ItemsToGuess itemsToGuess = new ItemsToGuess();
-            
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
+                        .build());
 
 
-            database.beginTransaction();
-            ItemsToGuess itemsToGuess2 = database.copyToRealm(itemsToGuess);
-            database.commitTransaction();
 
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+
+
+        database =  new RealmConfiguration.Builder(this)
+                        .name("GuessTheCar.realm")
+                        .deleteRealmIfMigrationNeeded()
+                        .build();
+        Realm.setDefaultConfiguration(database);
+
+        this.realm = RealmController.with(this).getRealm();
+        //RealmController.with(this).refresh();
+       // RealmController.with(this).add("Infinity");
+        //RealmController.with(this).add("Mercedes");
+      //  RealmController.with(this).add("Mazda");
+
+        realm.beginTransaction();
+        ItemsToGuess itemsToGuess1 = realm.createObject(ItemsToGuess.class);
+        itemsToGuess1.setTextToGuess("Infinity");
+        int nextID = (int) (realm.where(ItemsToGuess.class).max("id").intValue() + 1);
+        itemsToGuess1.setId(nextID);
+        itemsToGuess1.setGuessed(false);
+        realm.commitTransaction();
+
+
+       /* ItemsToGuess itemsToGuess2 = realm.createObject(ItemsToGuess.class);
+        itemsToGuess2.setTextToGuess("Mercedes");
+        itemsToGuess2.setId(2);
+        itemsToGuess2.setGuessed(false);
+
+
+
+        ItemsToGuess itemsToGuess3 = realm.createObject(ItemsToGuess.class);
+        itemsToGuess3.setTextToGuess("Mazda");
+        itemsToGuess3.setId(3);
+        itemsToGuess3.setGuessed(false);*/
+        realm.commitTransaction();
+
     }
 
     @Override

@@ -17,6 +17,12 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
+
 /**
  * Created by Ioan.Dinu on 7/28/2016.
  */
@@ -25,6 +31,8 @@ public class ActivityLevel1Picture1 extends Activity {
     private Button checkButton ;
     private EditText editText;
     private CheckedTextView checkedTextView;
+    Realm realm ;
+    ItemsToGuess textToGuess;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,6 +40,10 @@ public class ActivityLevel1Picture1 extends Activity {
         setContentView(R.layout.activity_1_picture1);
         checkButton = (Button) findViewById(R.id.btn_check);
         editText = (EditText) findViewById(R.id.editText);
+        this.realm = RealmController.with(this).getRealm();
+        RealmController.with(this).refresh();
+
+        textToGuess = RealmController.with(this).getItem(0);
     }
 
     @Override
@@ -72,24 +84,24 @@ public class ActivityLevel1Picture1 extends Activity {
 
 
     public void checkText(View view) {
-
-        //Button
-        checkButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Editable inputText = editText.getText();
-                if (inputText.equals("TEST")) {
-                    checkedTextView.setChecked(true);
-                } else {
-                    checkedTextView.setChecked(false);
-                }
-                if (inputText.equals("TEST")) {
-                    new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Good !!!").show();
-                } else {
-                    new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Wrong !!!" + inputText.toString()).show();
-
-                }
-            }
-        });
+//
+//        //Button
+//        checkButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Editable inputText = editText.getText();
+//                if (inputText.equals(textToGuess)) {
+//                    checkedTextView.setChecked(true);
+//                } else {
+//                    checkedTextView.setChecked(false);
+//                }
+//                if (inputText.equals("TEST")) {
+//                    new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Good !!!").show();
+//                } else {
+//                    new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Wrong !!!" + inputText.toString()).show();
+//
+//                }
+//            }
+//        });
 
         // Keyboard button
 
@@ -98,15 +110,20 @@ public class ActivityLevel1Picture1 extends Activity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     Editable inputText = editText.getText();
-                    String test = "T";
-                    if (test.equals(inputText.toString())) {
+                    final String test = "T";
+                    if (textToGuess.getTextToGuess().equals(inputText.toString())) {
+
                         new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Good !!!").show();
+
                         // Closing keyboard
                         InputMethodManager imm = (InputMethodManager)getSystemService(ActivityLevel1Picture1.this.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                         editText.setEnabled(false);
+
                     } else {
+
                         new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Wrong !!!" + inputText.toString()).show();
+
                         // Closing keyboard
                         InputMethodManager imm = (InputMethodManager)getSystemService(ActivityLevel1Picture1.this.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
@@ -116,6 +133,18 @@ public class ActivityLevel1Picture1 extends Activity {
                 return false;
             }
         });
+    }
+
+    public void updateGuessed(final ItemsToGuess itemsToGuess){
+        itemsToGuess.setGuessed(true);
+        realm.executeTransaction(new Realm.Transaction(){
+
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealm(itemsToGuess);
+            }
+        });
+
     }
 
 }
