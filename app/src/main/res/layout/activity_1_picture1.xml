@@ -39,7 +39,6 @@
         android:checked="false"
         android:checkMarkTint="#82FA58"
         android:inputType="text"
-        android:onClick="checkText"
         android:padding="15dp"
         />
 
