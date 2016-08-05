@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ioandinu.test.utils.Message;
@@ -47,6 +48,8 @@ public class ActivityLevel1Picture1 extends Activity {
     boolean b ;
     Realm realm;
     int valueOfImage = 0;
+    ImageView imageView;
+    int idd = 0;
 
     //Realm realm ;
     //ItemsToGuess textToGuess;
@@ -55,14 +58,19 @@ public class ActivityLevel1Picture1 extends Activity {
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_1_picture1);
-        editText = (EditText) findViewById(R.id.editText);
-        checkedTextView = (CheckedTextView) findViewById(R.id.checkTextView);
-
-        realm = Realm.getInstance(this);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             valueOfImage = extras.getInt("position");
+            idd = extras.getInt("image");
         }
+        editText = (EditText) findViewById(R.id.editText);
+        checkedTextView = (CheckedTextView) findViewById(R.id.checkTextView);
+        imageView = (ImageView) findViewById(R.id.image_picture);
+        imageView.setImageResource(idd);
+
+        realm = Realm.getInstance(this);
+
+
 
         View v = null;
         RealmQuery<ItemsToGuess> query = realm.where(ItemsToGuess.class);
@@ -72,6 +80,8 @@ public class ActivityLevel1Picture1 extends Activity {
         String name = itemsToGuess.getTextToGuess();
         b = itemsToGuess.isGuessed();
         checkText(v,valueOfImage,name,b,itemsToGuess);
+
+
 
 
 
@@ -215,7 +225,7 @@ public class ActivityLevel1Picture1 extends Activity {
 
 
     public void checkText(View view, final int valueOfPicture, final String name, final boolean b, final ItemsToGuess itemsToGuess) {
-        Message.message(ActivityLevel1Picture1.this,"" + b);
+
 
 
         if(!b) {
@@ -235,7 +245,7 @@ public class ActivityLevel1Picture1 extends Activity {
                             realm.beginTransaction();
                             itemsToGuess.setGuessed(true);
                             realm.commitTransaction();
-                            new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Good !!!").show();
+                            new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Good !").show();
 
                             // Closing keyboard
                             InputMethodManager imm = (InputMethodManager) getSystemService(ActivityLevel1Picture1.this.INPUT_METHOD_SERVICE);
@@ -246,7 +256,7 @@ public class ActivityLevel1Picture1 extends Activity {
 
                         } else {
 
-                            new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Wrong !!!" + inputText.toString()).show();
+                            new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Wrong !").show();
 
                             // Closing keyboard
                             InputMethodManager imm = (InputMethodManager) getSystemService(ActivityLevel1Picture1.this.INPUT_METHOD_SERVICE);
