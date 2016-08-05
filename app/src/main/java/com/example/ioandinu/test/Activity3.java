@@ -45,7 +45,9 @@ public class Activity3 extends Activity {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
+
                 Intent i = new Intent(Activity3.this, ActivityLevel1Picture1.class);
+                i.putExtra("position",position);
                 startActivity(i);
 
             }

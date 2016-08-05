@@ -18,6 +18,7 @@ import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.ioandinu.test.utils.Message;
 import com.example.ioandinu.test.utils.SharedPreference;
 
 import org.w3c.dom.Text;
@@ -38,7 +39,6 @@ import io.realm.RealmResults;
 
 public class ActivityLevel1Picture1 extends Activity {
 
-    private Button checkButton ;
     private EditText editText;
     private CheckedTextView checkedTextView;
     boolean infinityIsChecked ;
@@ -46,6 +46,7 @@ public class ActivityLevel1Picture1 extends Activity {
     Activity context = this;
     boolean b ;
     Realm realm;
+    int valueOfImage = 0;
 
     //Realm realm ;
     //ItemsToGuess textToGuess;
@@ -54,60 +55,76 @@ public class ActivityLevel1Picture1 extends Activity {
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_1_picture1);
-        checkButton = (Button) findViewById(R.id.btn_check);
         editText = (EditText) findViewById(R.id.editText);
+        checkedTextView = (CheckedTextView) findViewById(R.id.checkTextView);
 
         realm = Realm.getInstance(this);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            valueOfImage = extras.getInt("position");
+        }
+
+        View v = null;
+        RealmQuery<ItemsToGuess> query = realm.where(ItemsToGuess.class);
+        query.equalTo("id",valueOfImage);
+        ItemsToGuess itemsToGuess = new ItemsToGuess();
+        itemsToGuess = query.findFirst();
+        String name = itemsToGuess.getTextToGuess();
+        b = itemsToGuess.isGuessed();
+        checkText(v,valueOfImage,name,b,itemsToGuess);
 
 
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-
-                RealmQuery<ItemsToGuess> query = realm.where(ItemsToGuess.class);
-                query.equalTo("id",0);
-                ItemsToGuess itemsToGuess = new ItemsToGuess();
-                itemsToGuess = query.findFirst();
-                String name = itemsToGuess.getTextToGuess();
-                b = itemsToGuess.isGuessed();
 
 
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-
-                    if (b == false) {
-                        Editable inputText = editText.getText();
-                        if (name.equals(inputText.toString())) {
-                            infinityIsChecked = true;
-                            realm.beginTransaction();
-                            itemsToGuess.setGuessed(true);
-                            realm.commitTransaction();
-                            new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Good !!!" ).show();
-
-                            // Closing keyboard
-                            InputMethodManager imm = (InputMethodManager) getSystemService(ActivityLevel1Picture1.this.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-                            editText.setEnabled(false);
-
-                        } else {
-
-                            new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Wrong !!!" + inputText.toString()).show();
-
-                            // Closing keyboard
-                            InputMethodManager imm = (InputMethodManager) getSystemService(ActivityLevel1Picture1.this.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-                        }
-                        return true;
-                    }
-                    else{
-                        editText.setFocusable(false);
-                        editText.setEnabled(false);
-                    }
-
-                }
-                return false;
-            }
-        });
+//        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//
+//                RealmQuery<ItemsToGuess> query = realm.where(ItemsToGuess.class);
+//                query.equalTo("id",0);
+//                ItemsToGuess itemsToGuess = new ItemsToGuess();
+//                itemsToGuess = query.findFirst();
+//                String name = itemsToGuess.getTextToGuess();
+//                b = itemsToGuess.isGuessed();
+//
+//
+//                if (actionId == EditorInfo.IME_ACTION_DONE) {
+//
+//
+//                    if (b == false) {
+//                        Editable inputText = editText.getText();
+//                        if (name.equals(inputText.toString())) {
+//                            infinityIsChecked = true;
+//                            realm.beginTransaction();
+//                            itemsToGuess.setGuessed(true);
+//                            realm.commitTransaction();
+//                            new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Good !!!" ).show();
+//
+//                            // Closing keyboard
+//                            InputMethodManager imm = (InputMethodManager) getSystemService(ActivityLevel1Picture1.this.INPUT_METHOD_SERVICE);
+//                            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+//                            editText.setEnabled(false);
+//
+//                        } else {
+//
+//                            new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Wrong !!!" + inputText.toString()).show();
+//
+//                            // Closing keyboard
+//                            InputMethodManager imm = (InputMethodManager) getSystemService(ActivityLevel1Picture1.this.INPUT_METHOD_SERVICE);
+//                            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+//                        }
+//                        return true;
+//                    }
+//                    else{
+//                        editText.setFocusable(false);
+//                        editText.setEnabled(false);
+//                    }
+//
+//                }
+//                return false;
+//            }
+//        });
 
 
 
@@ -127,6 +144,11 @@ public class ActivityLevel1Picture1 extends Activity {
     protected void onStart() {
         super.onStart();
         if(infinityIsChecked == true){
+            RealmQuery<ItemsToGuess> query = realm.where(ItemsToGuess.class);
+            query.equalTo("id",valueOfImage);
+            ItemsToGuess itemsToGuess = new ItemsToGuess();
+            itemsToGuess = query.findFirst();
+            b = itemsToGuess.isGuessed();
             editText.setFocusable(false);
             editText.setEnabled(false);
         }
@@ -136,6 +158,11 @@ public class ActivityLevel1Picture1 extends Activity {
     protected void onRestart() {
         super.onRestart();
         if(infinityIsChecked == true){
+            RealmQuery<ItemsToGuess> query = realm.where(ItemsToGuess.class);
+            query.equalTo("id",valueOfImage);
+            ItemsToGuess itemsToGuess = new ItemsToGuess();
+            itemsToGuess = query.findFirst();
+            b = itemsToGuess.isGuessed();
             editText.setFocusable(false);
             editText.setEnabled(false);
         }
@@ -150,6 +177,10 @@ public class ActivityLevel1Picture1 extends Activity {
     protected void onPause() {
         super.onPause();
         if(infinityIsChecked == true){
+            ItemsToGuess itemsToGuess = new ItemsToGuess();
+            realm.beginTransaction();
+            itemsToGuess.setGuessed(true);
+            realm.commitTransaction();
         }
     }
 
@@ -157,6 +188,10 @@ public class ActivityLevel1Picture1 extends Activity {
     protected void onStop() {
         super.onStop();
         if(infinityIsChecked == true){
+            ItemsToGuess itemsToGuess = new ItemsToGuess();
+            realm.beginTransaction();
+            itemsToGuess.setGuessed(true);
+            realm.commitTransaction();
         }
 
     }
@@ -165,6 +200,10 @@ public class ActivityLevel1Picture1 extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         if(infinityIsChecked == true){
+            ItemsToGuess itemsToGuess = new ItemsToGuess();
+            realm.beginTransaction();
+            itemsToGuess.setGuessed(true);
+            realm.commitTransaction();
         }
     }
 
@@ -175,99 +214,63 @@ public class ActivityLevel1Picture1 extends Activity {
 
 
 
-    public void checkText(View view) {
+    public void checkText(View view, final int valueOfPicture, final String name, final boolean b, final ItemsToGuess itemsToGuess) {
+        Message.message(ActivityLevel1Picture1.this,"" + b);
 
 
+        if(!b) {
+            checkedTextView.setVisibility(View.INVISIBLE);
+            editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
 
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
 
 
+//                    if (!b) {
+                        Editable inputText = editText.getText();
+                        if (name.equals(inputText.toString())) {
+                            infinityIsChecked = true;
+                            realm.beginTransaction();
+                            itemsToGuess.setGuessed(true);
+                            realm.commitTransaction();
+                            new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Good !!!").show();
 
+                            // Closing keyboard
+                            InputMethodManager imm = (InputMethodManager) getSystemService(ActivityLevel1Picture1.this.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+                            editText.setVisibility(View.INVISIBLE);
+                            checkedTextView.setVisibility(View.VISIBLE);
+                            checkedTextView.setText(name);
 
+                        } else {
 
-//
-//        //Button
-//        checkButton.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                Editable inputText = editText.getText();
-//                if (inputText.equals(textToGuess)) {
-//                    checkedTextView.setChecked(true);
-//                } else {
-//                    checkedTextView.setChecked(false);
-//                }
-//                if (inputText.equals("TEST")) {
-//                    new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Good !!!").show();
-//                } else {
-//                    new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Wrong !!!" + inputText.toString()).show();
-//
-//                }
-//            }
-//        });
+                            new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Wrong !!!" + inputText.toString()).show();
 
-        // Keyboard button
+                            // Closing keyboard
+                            InputMethodManager imm = (InputMethodManager) getSystemService(ActivityLevel1Picture1.this.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+                        }
+                        return true;
 
-
-
-//        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE_FILE_STRINGS", Context.MODE_PRIVATE);
-//
-//
-//                if (actionId == EditorInfo.IME_ACTION_DONE) {
-//
-//                    String name = sharedPreferences.getString("name", "No name");
-//                    boolean infinityBoolean = sharedPreferences.getBoolean("name1", false);
-//
-//                    if (infinityBoolean == false) {
-//                        Editable inputText = editText.getText();
-//                        if (name.equals(inputText.toString())) {
-//
-//                            SharedPreferences.Editor editor =  getSharedPreferences("PREFERENCE_FILE_STRINGS", Context.MODE_PRIVATE).edit();
-//                            editor.remove("name1").apply();
-//                            editor.putBoolean("name1",true);
-//                            editor.commit();
-//
-//                            boolean infinityBoolean2 = sharedPreferences.getBoolean("name1", false);
-//
-//
-//                            new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Good !!!" + " " + infinityBoolean2).show();
-//                            infinityIsChecked = true;
-//                            // Closing keyboard
-//                            InputMethodManager imm = (InputMethodManager) getSystemService(ActivityLevel1Picture1.this.INPUT_METHOD_SERVICE);
-//                            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-//                            editText.setEnabled(false);
-//
-//                        } else {
-//
-//                            new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Wrong !!!" + inputText.toString()).show();
-//
-//                            // Closing keyboard
-//                            InputMethodManager imm = (InputMethodManager) getSystemService(ActivityLevel1Picture1.this.INPUT_METHOD_SERVICE);
-//                            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-//                        }
-//                        return true;
-//                    }
-//                    else{
+//                    else if(b){
 //                        editText.setEnabled(false);
 //                    }
-//
-//                }
-//                return false;
-//            }
-//        });
+
+                    }
+                    return false;
+                }
+            });
+        }else{
+            editText.setEnabled(false);
+            checkedTextView.setVisibility(View.VISIBLE);
+            checkedTextView.setText(name);
+        }
+
+
     }
 
-//    public void updateGuessed(final ItemsToGuess itemsToGuess){
-//        itemsToGuess.setGuessed(true);
-//        realm.executeTransaction(new Realm.Transaction(){
-//
-//            @Override
-//            public void execute(Realm realm) {
-//                realm.copyToRealm(itemsToGuess);
-//            }
-//        });
 
-    //}
 
 }

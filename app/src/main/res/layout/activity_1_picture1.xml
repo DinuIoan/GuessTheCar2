@@ -42,17 +42,32 @@
         android:padding="15dp"
         />
 
+    <CheckedTextView
+        android:id="@+id/checkTextView"
+        android:layout_width="270dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        android:background="@drawable/txt_input"
+        android:inputType="text"
+        android:checkMark="@drawable/ic_check_circle"
+        android:checked="false"
+        android:textSize="20sp"
+        android:padding="10dp"
 
-    <Button
-        android:id="@+id/btn_check"
-        android:layout_below="@id/editText"
-        android:layout_width="100dp"
-        android:layout_height="70dp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="50dp"
-        android:background="@drawable/btn_check_text"
-        android:text="Check"
-        android:onClick="checkText"/>
+        />
+
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_check"-->
+        <!--android:layout_below="@id/editText"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="70dp"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_margin="50dp"-->
+        <!--android:background="@drawable/btn_check_text"-->
+        <!--android:text="Check"-->
+        <!--android:onClick="checkText"/>-->
 
 </RelativeLayout>
