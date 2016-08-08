@@ -19,6 +19,7 @@ package com.example.ioandinu.test;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,12 +32,18 @@ import android.widget.TextView;
 
 import com.example.ioandinu.test.utils.Message;
 
+import io.realm.Realm;
+import io.realm.RealmQuery;
+
+
 
 /**
  * Example Activity to demonstrate the lifecycle callback methods.
  */
 public class Activity3 extends Activity {
 
+    Realm realm;
+    ImageView imageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,13 +52,16 @@ public class Activity3 extends Activity {
         GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(new ImageAdapter(this));
 
+        //ImageAdapter imageAdapter2 = new ImageAdapter(Activity3.this);
+
 
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                ImageAdapter imageAdapter = new ImageAdapter(Activity3.this);
 
+
+                ImageAdapter imageAdapter = new ImageAdapter(Activity3.this);
                 Integer image = imageAdapter.getItem(position);
                 Intent i = new Intent(Activity3.this, ActivityLevel1Picture1.class);
                 i.putExtra("position",position);

@@ -68,6 +68,7 @@ public class ActivityLevel1Picture1 extends Activity {
         imageView = (ImageView) findViewById(R.id.image_picture);
         imageView.setImageResource(idd);
 
+
         realm = Realm.getInstance(this);
 
 

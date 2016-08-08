@@ -17,29 +17,24 @@
 package com.example.ioandinu.test;
 
 import android.app.Activity;
-import android.content.ClipData;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.widget.TextView;
 
-import com.example.ioandinu.test.utils.Message;
-import com.example.ioandinu.test.utils.SQLiteClass;
 import com.facebook.stetho.Stetho;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
-import io.realm.RealmResults;
 
 
 /**
@@ -66,66 +61,130 @@ public class Activity1 extends Activity {
 
         realm = Realm.getInstance(this);
 
+
         RealmQuery<ItemsToGuess> query = realm.where(ItemsToGuess.class);
         long numberOfEntries = query.count();
 
         List<String> names = new ArrayList<>();
-        names.add(0,"Mercedes");
-        names.add(1,"Toyota");
-        names.add(2,"Mitsubishi");
-        names.add(3,"Mazda");
-        names.add(4,"Jaguar");
-        names.add(5,"Chevrolet");
-        names.add(6,"Dodge");
-        names.add(7,"Cadillac");
-        names.add(8,"Audi");
-        names.add(9,"Volvo");
-        names.add(10,"Opel");
-        names.add(11,"Honda");
-        names.add(12,"Porche");
-        names.add(13,"Renault");
-        names.add(14,"Subaru");
-        names.add(15,"Pontiac");
-        names.add(16,"Lamborghini");
-        names.add(17,"Peugeot");
-        names.add(18,"Lexus");
-        names.add(19,"Maserati");
-        names.add(20,"BMW");
-        names.add(21,"Suzuki");
-        names.add(22,"Fiat");
-        names.add(23,"Seat");
-        names.add(24,"Nissan");
-        names.add(25,"Bentley");
-        names.add(26,"Buick");
-        names.add(27,"Saab");
-        names.add(28,"Daewoo");
-        names.add(29,"Saturn");
-        names.add(30,"Holden");
-        names.add(31,"Vauxhall");
-        names.add(32,"Acura");
-        names.add(33,"Corvette");
-        names.add(34,"Saleen");
-        names.add(35,"Land Rover");
-        names.add(36,"Mustang");
-        names.add(37,"Koenigsegg");
-        names.add(38,"Lotus");
-        names.add(39,"Lincoln");
-        names.add(40,"Hummer");
-        names.add(41,"Maybach");
-        names.add(42,"Ssangyong");
-        names.add(43,"GMC");
-        names.add(44,"Dacia");
-        names.add(45,"Smart");
-        names.add(46,"Bugatti");
-        names.add(47,"Aston Martin");
+        names.add(0,"Infinity");
+        names.add(1,"Mercedes");
+        names.add(2,"Toyota");
+        names.add(3,"Mitsubishi");
+        names.add(4,"Mazda");
+        names.add(5,"Jaguar");
+        names.add(6,"Chevrolet");
+        names.add(7,"Dodge");
+        names.add(8,"Cadillac");
+        names.add(9,"Audi");
+        names.add(10,"Volvo");
+        names.add(11,"Opel");
+        names.add(12,"Honda");
+        names.add(13,"Porche");
+        names.add(14,"Renault");
+        names.add(15,"Subaru");
+        names.add(16,"Pontiac");
+        names.add(17,"Lamborghini");
+        names.add(18,"Peugeot");
+        names.add(19,"Lexus");
+        names.add(20,"Maserati");
+        names.add(21,"BMW");
+        names.add(22,"Suzuki");
+        names.add(23,"Fiat");
+        names.add(24,"Seat");
+        names.add(25,"Nissan");
+        names.add(26,"Bentley");
+        names.add(27,"Buick");
+        names.add(28,"Saab");
+        names.add(29,"Daewoo");
+        names.add(30,"Saturn");
+        names.add(31,"Holden");
+        names.add(32,"Vauxhall");
+        names.add(33,"Acura");
+        names.add(34,"Corvette");
+        names.add(35,"Saleen");
+        names.add(36,"Land Rover");
+        names.add(37,"Mustang");
+        names.add(38,"Koenigsegg");
+        names.add(39,"Lotus");
+        names.add(40,"Lincoln");
+        names.add(41,"Hummer");
+        names.add(42,"Maybach");
+        names.add(43,"Ssangyong");
+        names.add(44,"GMC");
+        names.add(45,"Dacia");
+        names.add(46,"Smart");
+        names.add(47,"Bugatti");
+        names.add(48,"Aston Martin");
+
+        List<Integer> drawables = new ArrayList<>();
+        drawables.add(R.drawable.a1);
+        drawables.add(R.drawable.a2);
+        drawables.add(R.drawable.a3);
+        drawables.add(R.drawable.a4);
+        drawables.add(R.drawable.a5);
+        drawables.add(R.drawable.a6);
+        drawables.add(R.drawable.a7);
+        drawables.add(R.drawable.a8);
+        drawables.add(R.drawable.a9);
+        drawables.add(R.drawable.a10);
+        drawables.add(R.drawable.a11);
+        drawables.add(R.drawable.a12);
+        drawables.add(R.drawable.a13);
+        drawables.add(R.drawable.a14);
+        drawables.add(R.drawable.a15);
+        drawables.add(R.drawable.a16);
+        drawables.add(R.drawable.a17);
+        drawables.add(R.drawable.a18);
+        drawables.add(R.drawable.a19);
+        drawables.add(R.drawable.a20);
+        drawables.add(R.drawable.a21);
+        drawables.add(R.drawable.a22);
+        drawables.add(R.drawable.a23);
+        drawables.add(R.drawable.a24);
+        drawables.add(R.drawable.a25);
+        drawables.add(R.drawable.a26);
+        drawables.add(R.drawable.a27);
+        drawables.add(R.drawable.a28);
+        drawables.add(R.drawable.a29);
+        drawables.add(R.drawable.a30);
+        drawables.add(R.drawable.a31);
+        drawables.add(R.drawable.a32);
+        drawables.add(R.drawable.a33);
+        drawables.add(R.drawable.a34);
+        drawables.add(R.drawable.a35);
+        drawables.add(R.drawable.a36);
+        drawables.add(R.drawable.a37);
+        drawables.add(R.drawable.a38);
+        drawables.add(R.drawable.a39);
+        drawables.add(R.drawable.a40);
+        drawables.add(R.drawable.a41);
+        drawables.add(R.drawable.a42);
+        drawables.add(R.drawable.a43);
+        drawables.add(R.drawable.a44);
+        drawables.add(R.drawable.a45);
+        drawables.add(R.drawable.a46);
+        drawables.add(R.drawable.a48);
+        drawables.add(R.drawable.a49);
 
 
-        if(numberOfEntries < 49) {
-            for (int i = 2; i < 49; i++) {
+        Bundle bundle = getIntent().getExtras();
+
+
+        if(numberOfEntries < 48) {
+            for (int i = 0; i < 48; i++) {
+//                Bitmap icon = BitmapFactory.decodeResource(this.getResources(),
+//                        drawables.get(i));
+//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                icon.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                byte[] byteArray = stream.toByteArray();
+
+
+
                 ItemsToGuess itemsToGuess = new ItemsToGuess();
-                itemsToGuess.setTextToGuess(names.get(i - 1));
+                itemsToGuess.setTextToGuess(names.get(i));
                 itemsToGuess.setGuessed(false);
                 itemsToGuess.setId(i);
+                itemsToGuess.setDrawable(drawables.get(i));
 
                 realm.beginTransaction();
                 itemsToGuess = realm.copyToRealm(itemsToGuess);
