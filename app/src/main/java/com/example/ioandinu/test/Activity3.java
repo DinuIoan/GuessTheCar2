@@ -34,7 +34,7 @@ import com.example.ioandinu.test.utils.Message;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
-
+import io.realm.RealmResults;
 
 
 /**
@@ -44,7 +44,8 @@ public class Activity3 extends Activity {
 
     private Realm realm;
     private ImageView imageView;
-
+    private long guessed = 0;
+    private long unGuessed = 0;
 
 
     @Override
@@ -55,9 +56,11 @@ public class Activity3 extends Activity {
         gridview.setAdapter(new ImageAdapter(this));
 
 
-
         //ImageAdapter imageAdapter2 = new ImageAdapter(Activity3.this);
-
+        realm = Realm.getInstance(this);
+        RealmQuery<ItemsToGuess> query = realm.where(ItemsToGuess.class);
+        guessed = query.equalTo("isGuessed",true).count();
+        unGuessed = 49 - guessed;
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,

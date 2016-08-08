@@ -19,20 +19,61 @@ package com.example.ioandinu.test;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import io.realm.Realm;
+import io.realm.RealmQuery;
 
 
 /**
  * Example Activity to demonstrate the lifecycle callback methods.
  */
 public class Activity2 extends Activity {
+    private static final int PROGRESS = 0x1;
+
+    private ProgressBar mProgress;
+    private int mProgressStatus = 0;
+    private long guessed = 0;
+    private Realm realm;
+    private TextView textProgress;
+
+    private Handler mHandler = new Handler();
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_2);
+        mProgress = (ProgressBar) findViewById(R.id.progress_bar);
+        textProgress = (TextView) findViewById(R.id.text_progres);
+
+        realm = Realm.getInstance(Activity2.this);
+        RealmQuery<ItemsToGuess> query = realm.where(ItemsToGuess.class);
+        guessed = query.equalTo("isGuessed",true).count();
+        long unGuessed = 49 - guessed;
+        textProgress.setText("" + (int)guessed + "/" + unGuessed);
+
+        // Start lengthy operation in a background thread
+        new Thread(new Runnable() {
+            public void run() {
+                while (mProgressStatus < 49) {
+
+//                    RealmQuery<ItemsToGuess> query = realm.where(ItemsToGuess.class);
+//                    guessed = query.equalTo("isGuessed",true).count();
+                    mProgressStatus = (int) guessed;
+
+                    // Update the progress bar
+                    mHandler.post(new Runnable() {
+                        public void run() {
+                            mProgress.setProgress(mProgressStatus);
+                        }
+                    });
+                }
+            }
+        }).start();
     }
 
     @Override
