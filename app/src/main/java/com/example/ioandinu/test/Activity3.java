@@ -42,8 +42,10 @@ import io.realm.RealmQuery;
  */
 public class Activity3 extends Activity {
 
-    Realm realm;
-    ImageView imageView;
+    private Realm realm;
+    private ImageView imageView;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,8 +54,9 @@ public class Activity3 extends Activity {
         GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(new ImageAdapter(this));
 
-        //ImageAdapter imageAdapter2 = new ImageAdapter(Activity3.this);
 
+
+        //ImageAdapter imageAdapter2 = new ImageAdapter(Activity3.this);
 
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {

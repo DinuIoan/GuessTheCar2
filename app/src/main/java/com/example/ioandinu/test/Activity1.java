@@ -165,13 +165,14 @@ public class Activity1 extends Activity {
         drawables.add(R.drawable.a46);
         drawables.add(R.drawable.a48);
         drawables.add(R.drawable.a49);
+        drawables.add(R.drawable.a50);
 
 
         Bundle bundle = getIntent().getExtras();
 
 
-        if(numberOfEntries < 48) {
-            for (int i = 0; i < 48; i++) {
+        if(numberOfEntries < 49) {
+            for (int i = 0; i < 49; i++) {
 //                Bitmap icon = BitmapFactory.decodeResource(this.getResources(),
 //                        drawables.get(i));
 //                ByteArrayOutputStream stream = new ByteArrayOutputStream();

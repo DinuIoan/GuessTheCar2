@@ -6,6 +6,7 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.KeyEvent;
@@ -50,6 +51,7 @@ public class ActivityLevel1Picture1 extends Activity {
     int valueOfImage = 0;
     ImageView imageView;
     int idd = 0;
+    private int guessed = 0;
 
     //Realm realm ;
     //ItemsToGuess textToGuess;
@@ -63,6 +65,7 @@ public class ActivityLevel1Picture1 extends Activity {
             valueOfImage = extras.getInt("position");
             idd = extras.getInt("image");
         }
+
         editText = (EditText) findViewById(R.id.editText);
         checkedTextView = (CheckedTextView) findViewById(R.id.checkTextView);
         imageView = (ImageView) findViewById(R.id.image_picture);
@@ -220,7 +223,9 @@ public class ActivityLevel1Picture1 extends Activity {
 
     public void back(View view){
         Intent i = new Intent(this, Activity3.class);
+        Message.message(ActivityLevel1Picture1.this ,"" + guessed);
         startActivity(i);
+
     }
 
 
@@ -245,7 +250,12 @@ public class ActivityLevel1Picture1 extends Activity {
                             infinityIsChecked = true;
                             realm.beginTransaction();
                             itemsToGuess.setGuessed(true);
+                            guessed = 1;
+                            //itemsToGuess.setDrawable(R.drawable.a2);
                             realm.commitTransaction();
+
+
+
                             new AlertDialog.Builder(ActivityLevel1Picture1.this).setMessage("Good !").show();
 
                             // Closing keyboard
