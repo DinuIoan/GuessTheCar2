@@ -2,6 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
+    <Button
+        android:layout_below="@+id/lvl_toolbar_lvl_1_picture_1"
+        android:layout_alignParentRight="true"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        android:text="HINT"
+        android:background="@drawable/btn_hint2"
+        android:layout_margin="10dp"
+        />
 
     <ImageView
         android:layout_width="match_parent"

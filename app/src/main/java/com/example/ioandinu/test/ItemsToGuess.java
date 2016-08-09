@@ -13,6 +13,24 @@ public class ItemsToGuess extends RealmObject{
     private String textToGuess;
     private boolean isGuessed = false;
     private int drawable;
+    private String hintDescription;
+    private String hintChars;
+
+    public String getHintDescription() {
+        return hintDescription;
+    }
+
+    public void setHintDescription(String hintDescription) {
+        this.hintDescription = hintDescription;
+    }
+
+    public String getHintChars() {
+        return hintChars;
+    }
+
+    public void setHintChars(String hintChars) {
+        this.hintChars = hintChars;
+    }
 
     public boolean isGuessed() {
         return isGuessed;

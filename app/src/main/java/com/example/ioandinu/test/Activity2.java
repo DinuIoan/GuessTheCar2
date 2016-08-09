@@ -53,8 +53,7 @@ public class Activity2 extends Activity {
         realm = Realm.getInstance(Activity2.this);
         RealmQuery<ItemsToGuess> query = realm.where(ItemsToGuess.class);
         guessed = query.equalTo("isGuessed",true).count();
-        long unGuessed = 49 - guessed;
-        textProgress.setText("" + (int)guessed + "/" + unGuessed);
+        textProgress.setText("" + (int)guessed + "/" + 49);
 
         // Start lengthy operation in a background thread
         new Thread(new Runnable() {
